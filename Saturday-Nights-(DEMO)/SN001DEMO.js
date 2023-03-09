@@ -1,5 +1,4 @@
->
-<!--Saturday Nights | DEMO TEST FILE-->
+// Saturday Nights | DEMO TEST FILE
 var videoID = "aT3s4v2poMY";
 
 var startTime = 0;
