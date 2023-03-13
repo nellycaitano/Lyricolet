@@ -4,4 +4,4 @@ Lyricolet is a website that is solely dedicated to providing accurate and reliab
 This is a personal project, so expect this to finish in a long time. You can consider this as my first venture to CSS and JS and my second for HTML so don't expect any results for now
 
 
-You can help by making an enhancement or making a pull request!
+You can help by making an enhancement request in the issues tab or making a pull request!
