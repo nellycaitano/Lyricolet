@@ -11,21 +11,21 @@
     <script src="https://www.youtube.com/iframe_api" defer></script>
 
     <script>
-      let videoID = "aT3s4v2poMY";
-      let startTime = 0;
-      let lyrics = `[00:20.00]First line of lyrics
+      var videoID = "aT3s4v2poMY";
+      var startTime = 0;
+      var lyrics = `[00:20.00]First line of lyrics
 [00:30.00]Second line of lyrics
 [00:40.00]Third line of lyrics`;
 
       // YouTube Player API ready check
-      let playerReadyCheck = setInterval(function() {
+      var playerReadyCheck = setInterval(function() {
         if (typeof YT !== "undefined" && YT.loaded) {
           clearInterval(playerReadyCheck);
           onYouTubeIframeAPIReady();
         }
       }, 100);
 
-      let player;
+      var player;
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '360',
@@ -41,25 +41,25 @@
       }
 
       function onPlayerError(event) {
-        let errorCode = event.data;
+        var errorCode = event.data;
         if (errorCode === 2 || errorCode === 100 || errorCode === 101 || errorCode === 150) {
           console.error("YouTube video error. Error code:", errorCode);
           document.getElementById("player").innerHTML = "There was an error loading the YouTube video.";
         }
       }
 
-      let lyricsDiv = document.getElementById("lyrics");
-      let lyricLines = lyrics.split("\n");
-      let currentLine = 0;
-      let lastLineTime = -1;
+      var lyricsDiv = document.getElementById("lyrics");
+      var lyricLines = lyrics.split("\n");
+      var currentLine = 0;
+      var lastLineTime = -1;
       function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PLAYING) {
           setInterval(function() {
-            let currentTime = player.getCurrentTime();
-            let currentLineText = lyricLines[currentLine];
-            let matches = currentLineText.match(/\[(\d+):(\d+\.\d+)\]/);
+            var currentTime = player.getCurrentTime();
+            var currentLineText = lyricLines[currentLine];
+            var matches = currentLineText.match(/\[(\d+):(\d+\.\d+)\]/);
             if (matches) {
-              let lineTime = parseInt(matches[1]) * 60 + parseFloat(matches[2]);
+              var lineTime = parseInt(matches[1]) * 60 + parseFloat(matches[2]);
               if (currentTime >= lineTime) {
                 if (lastLineTime == -1 || currentTime >= lastLineTime + 1) {
                   lyricsDiv.innerHTML = currentLineText.replace(matches[0], "");
@@ -76,9 +76,9 @@
         event.target.playVideo();
       }
 
-      let copyButton = document.getElementById("copyButton");
+      var copyButton = document.getElementById("copyButton");
       copyButton.addEventListener("click", function() {
-        let lyricsText = lyricsDiv.innerText;
+        var lyricsText = lyricsDiv.innerText;
         if (navigator.clipboard) {
           navigator.clipboard.writeText(lyricsText).then(function() {
             alert("Lyrics copied to clipboard!");
@@ -86,3 +86,11 @@
             copyFallback(lyricsText);
           });
         }
+      });
+    </script>
+
+    <p> Remember that this is just a test site, and it is still in its extremely early stages. Nothing will work correctly and there will always be something wrong. As you can see, this webpage is completely empty but that's just because it's still a work in progress.</p>
+    <p>i also have to rewrite and separate the js code</p>
+
+    </body>
+</html>
