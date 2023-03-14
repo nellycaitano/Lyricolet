@@ -79,12 +79,10 @@
       let copyButton = document.getElementById("copyButton");
       copyButton.addEventListener("click", function() {
         let lyricsText = lyricsDiv.innerText;
-        navigator.clipboard.writeText(lyricsText);
-        alert("Lyrics copied to clipboard!");
-      });
-    </script>
-
-    <p> Remember that this is just a test site, and it is still in its extremely early stages. Nothing will work correctly and there will always be something wrong. As you can see, this webpage is completely empty but that's just because it's still a work in progress.</p>
-    <p>i also have to rewrite and separate the js code</p>
-  </body>
-</html>
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(lyricsText).then(function() {
+            alert("Lyrics copied to clipboard!");
+          }).catch(function() {
+            copyFallback(lyricsText);
+          });
+        }
