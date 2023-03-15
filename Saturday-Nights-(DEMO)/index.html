@@ -3,21 +3,23 @@
   <head>
     <meta charset="UTF-8">
     <title>Saturday Nights</title>
+    <style>
+      #lyrics div.current {
+        font-weight: bold;
+        font-size: 20px;
+      }
+    </style>
   </head>
   <body>
     <div id="player"></div>
-    <div id="lyrics" style="font-size:16px;font-weight:normal;"></div>
+    <div id="lyrics"></div>
     <button id="copyButton">Copy Lyrics</button>
     <script src="https://www.youtube.com/iframe_api" defer></script>
-
     <script>
       var videoID = "aT3s4v2poMY";
       var startTime = 0;
-      var lyrics = `[00:20.00]First line of lyrics
-[00:30.00]Second line of lyrics
-[00:40.00]Third line of lyrics`;
+      var lyrics = `[00:20.00]First line of lyrics\n[00:30.00]Second line of lyrics\n[00:40.00]Third line of lyrics`;
 
-      // YouTube Player API ready check
       var playerReadyCheck = setInterval(function() {
         if (typeof YT !== "undefined" && YT.loaded) {
           clearInterval(playerReadyCheck);
@@ -62,9 +64,10 @@
               var lineTime = parseInt(matches[1]) * 60 + parseFloat(matches[2]);
               if (currentTime >= lineTime) {
                 if (lastLineTime == -1 || currentTime >= lastLineTime + 1) {
-                  lyricsDiv.innerHTML = currentLineText.replace(matches[0], "");
-                  lastLineTime = currentTime;
+                  lyricsDiv.childNodes[currentLine].classList.remove("current");
                   currentLine++;
+                  lyricsDiv.childNodes[currentLine].classList.add("current");
+                  lastLineTime = currentTime;
                 }
               }
             }
@@ -88,9 +91,9 @@
         }
       });
     </script>
-
-    <p> Remember that this is just a test site, and it is still in its extremely early stages. Nothing will work correctly and there will always be something wrong. As you can see, this webpage is completely empty but that's just because it's still a work in progress.</p>
+    
+ <p> Remember that this is just a test site, and it is still in its extremely early stages. Nothing will work correctly and there will always be something wrong. As you can see, this webpage is completely empty but that's just because it's still a work in progress.</p>
     <p>i also have to rewrite and separate the js code</p>
-
-    </body>
+    
+  </body>
 </html>
