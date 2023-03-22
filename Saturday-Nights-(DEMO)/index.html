@@ -2,60 +2,22 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Saturday Nights</title>
-    <style>
-      #lyrics div.current {
-        font-weight: bold;
-        font-size: 20px;
-      }
-    </style>
+    <title>Saturday Nights | Khalid</title>
+    <style>#lyrics{height:200px;overflow:auto;user-select:text}</style>
   </head>
   <body>
-    <div id="player">
-      <iframe id="playerIframe" width="640" height="360" src="https://www.youtube.com/embed/LOxkNJx0kRc" frameborder="0" allowfullscreen></iframe>
-    </div>
-    <div id="lyrics"></div>
-    <button id="copyButton">Copy Lyrics</button>
+    <div id="player"></div>
+    <div id="lyrics" contenteditable></div>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-      var startTime = 0;
+      var videoID = "esh8mNoPxGE", startTime = 0;
       var lyrics = `[00:20.00]First line of lyrics\n[00:30.00]Second line of lyrics\n[00:40.00]Third line of lyrics`;
-
-      var lyricsDiv = document.getElementById("lyrics");
-      var lyricLines = lyrics.split("\n");
-      var currentLine = 0;
-      var lastLineTime = -1;
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING) {
-          setInterval(function() {
-            var currentTime = player.getCurrentTime();
-            var currentLineText = lyricLines[currentLine];
-            var matches = currentLineText.match(/\[(\d+):(\d+\.\d+)\]/);
-            if (matches) {
-              var lineTime = parseInt(matches[1]) * 60 + parseFloat(matches[2]);
-              if (currentTime >= lineTime) {
-                if (lastLineTime == -1 || currentTime >= lastLineTime + 1) {
-                  lyricsDiv.childNodes[currentLine].classList.remove("current");
-                  currentLine++;
-                  lyricsDiv.childNodes[currentLine].classList.add("current");
-                  lastLineTime = currentTime;
-                }
-              }
-            }
-          }, 100);
-        }
-      }
-
-      var copyButton = document.getElementById("copyButton");
-      copyButton.addEventListener("click", function() {
-        var lyricsText = lyricsDiv.innerText;
-        if (navigator.clipboard) {
-          navigator.clipboard.writeText(lyricsText).then(function() {
-            alert("Lyrics copied to clipboard!");
-          }).catch(function() {
-            copyFallback(lyricsText);
-          });
-        }
-      });
+      var playerReadyCheck = setInterval(function() {if(typeof YT !== "undefined" && YT.loaded){clearInterval(playerReadyCheck);onYouTubeIframeAPIReady();}}, 100);
+      var player, lyricsDiv = document.getElementById("lyrics"), lyricLines = lyrics.split("\n"), currentLine = 0, lastLineTime = -1;
+      function onYouTubeIframeAPIReady(){player = new YT.Player('player',{height:'360',width:'640',videoId:videoID,startSeconds:startTime,events:{'onReady':onPlayerReady,'onStateChange':onPlayerStateChange,'onError':onPlayerError}});}
+      function onPlayerError(event){var errorCode = event.data;if (errorCode === 2 || errorCode === 100 || errorCode === 101 || errorCode === 150){console.error("YouTube video error. Error code:", errorCode);document.getElementById("player").innerHTML = "There was an error loading the YouTube video. You can try again by refreshing the page."}}
+      function onPlayerStateChange(event){if (event.data == YT.PlayerState.PLAYING){setInterval(function(){var currentTime = player.getCurrentTime();var currentLineText = lyricLines[currentLine];var matches = currentLineText.match(/\[(\d{2}):(\d{2}\.\d{3})\]/);if(matches){var lineTime = parseInt(matches[1]) * 60 + parseFloat(matches[2]);if(currentTime >= lineTime){if(lastLineTime == -1 || currentTime >= lastLineTime + 1){lyricsDiv.childNodes[currentLine].classList.remove("current");currentLine++;lyricsDiv.childNodes[currentLine].classList.add("current");lastLineTime = currentTime;}}}}, 100);}}
+      function onPlayerReady(event){event.target.playVideo();}
     </script>
   </body>
 </html>
